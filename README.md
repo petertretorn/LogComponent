@@ -16,9 +16,9 @@ The log receiver periodically messeges a log writer actor that writes messeges t
 The receiver actor functions as a state machine with 3 distinct states: writing, flushing and closed.
 State transitions:
 
-writing -> flushing:  triggered by client sending stopWithFlush message, 
-flushing -> closed: triggered when internal buffer is empty
-writing -> closed: triggered by client sending stopWithNoFlush message, 
+* writing -> flushing:  triggered by client sending stopWithFlush message, 
+* flushing -> closed: triggered when internal buffer is empty
+* writing -> closed: triggered by client sending stopWithNoFlush message, 
 
 Benefits of using actors include no risk of race condition accessing the received logrequests between receiver actor and writer actor,
 plus scalability, the actor that is bottleneck can be scaled
