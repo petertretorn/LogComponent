@@ -13,7 +13,7 @@ Thorough refactoring of AsyncLog class
 The component can alternatively be implemented using Akka.NET and actors.
 A log receiver actor receives log messeges from client application and stores them in internal state.
 The log receiver periodically messeges a log writer actor that writes messeges to a specified sink.
-The receiver actor functions as a state machine with 3 distinct states, writing, flushing and closed.
+The receiver actor functions as a finite state machine with 3 distinct states, writing, flushing and closed.
 
 State transitions:
 
