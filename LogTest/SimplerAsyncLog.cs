@@ -42,10 +42,11 @@ namespace LogTest
 
                     if (token.IsCancellationRequested || isDoneFlushing) return;
 
-                    var logLine = _lines.Take();
-                    
-                    var line = CreateLogLine(logLine);
-                    _sink.Write(line);
+                    if ( _lines.TryTake( out LogLine logLine, TimeSpan.FromMilliseconds(50) ) )
+                    {
+                        var line = CreateLogLine(logLine);
+                        _sink.Write(line);
+                    }
                 }
 
                 catch (Exception swallow) { }
@@ -64,11 +65,14 @@ namespace LogTest
 
         public void StopWithoutFlush()
         {
+            _lines.CompleteAdding();
             _tokenSource.Cancel();
         }
 
         public void Write(string text)
         {
+            if (_lines.IsAddingCompleted) throw new InvalidOperationException("Cannot Write to Closed Log");
+            
             try
             {
                 _lines.TryAdd(new LogLine() { Text = text, Timestamp = DateTime.Now });
