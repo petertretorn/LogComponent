@@ -22,7 +22,7 @@ namespace Tests
 
             var fileSink = new FileSink(new TestDateTimeServer(testTime));
 
-            using (var sut = new AsyncLog(fileSink))
+            using (var sut = new SimplerAsyncLog(fileSink))
             {
                 sut.Write(expected);
                 sut.StopWithFlush();
@@ -44,7 +44,7 @@ namespace Tests
             var timeServer = new TestDateTimeServer(beforeMidnight);
             var fileSink = new FileSink(timeServer);
 
-            using (var sut = new AsyncLog(fileSink))
+            using (var sut = new SimplerAsyncLog(fileSink))
             {
                 sut.Write("before midnight");
 
@@ -74,7 +74,7 @@ namespace Tests
 
             var fileSink = new FileSink(new TestDateTimeServer(testTime));
 
-            using (var sut = new AsyncLog(fileSink))
+            using (var sut = new SimplerAsyncLog(fileSink))
             {
                 for (int i = 50; i > 0; i--)
                 {
@@ -97,7 +97,7 @@ namespace Tests
             var testTime = DateTime.Now - TimeSpan.FromDays(3);
             var fileSink = new FileSink(new TestDateTimeServer(testTime));
 
-            using (var sut = new AsyncLog(fileSink))
+            using (var sut = new SimplerAsyncLog(fileSink))
             {
                 for (int i = 50; i > 0; i--)
                 {
