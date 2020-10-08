@@ -1,5 +1,5 @@
 using LogTest;
-using LogTest.Extensions;
+using LogTest.Miscellaneous;
 using System;
 using System.Globalization;
 using System.IO;

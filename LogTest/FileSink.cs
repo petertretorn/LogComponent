@@ -1,7 +1,7 @@
 ﻿using LogTest.Interfaces;
 using System;
 using System.IO;
-using LogTest.Extensions;
+using LogTest.Miscellaneous;
 
 namespace LogTest
 {
@@ -18,10 +18,10 @@ namespace LogTest
             this.TimeServer = timeServer;
             this._rotationRule = rotationRule;
 
-            this._registeredDate = TimeServer.Now;
-
-            if (!Directory.Exists(@"C:\LogTest"))
-                Directory.CreateDirectory(@"C:\LogTest");
+            if (!Directory.Exists(Constants.BasePath))
+            {
+                Directory.CreateDirectory(Constants.BasePath);
+            }
 
             CreateNewWriter();
         }
@@ -33,8 +33,6 @@ namespace LogTest
         {
             if (_rotationRule.Evaluate(TimeServer.Now, _registeredDate))
             {
-                _registeredDate = TimeServer.Now;
-
                 CreateNewWriter();
             }
 
@@ -43,6 +41,8 @@ namespace LogTest
 
         private void CreateNewWriter()
         {
+            this._registeredDate = TimeServer.Now;
+
             this._writer?.Dispose();
 
             var path = TimeServer.Now.LogPath();

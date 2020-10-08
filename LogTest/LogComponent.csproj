@@ -57,7 +57,8 @@
     <Compile Include="DailyRotationRule.cs" />
     <Compile Include="AsyncLog.cs" />
     <Compile Include="DateTimeServer.cs" />
-    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Miscellaneous\Constants.cs" />
+    <Compile Include="Miscellaneous\Extensions.cs" />
     <Compile Include="FileSink.cs" />
     <Compile Include="Interfaces\ILogRotationRule.cs" />
     <Compile Include="Interfaces\IDateTimeServer.cs" />
