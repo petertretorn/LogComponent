@@ -54,10 +54,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DailyRotationRule.cs" />
     <Compile Include="AsyncLog.cs" />
     <Compile Include="DateTimeServer.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="FileSink.cs" />
+    <Compile Include="Interfaces\ILogRotationRule.cs" />
     <Compile Include="Interfaces\IDateTimeServer.cs" />
     <Compile Include="Interfaces\ILog.cs" />
     <Compile Include="Interfaces\ILogSink.cs" />

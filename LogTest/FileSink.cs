@@ -8,13 +8,17 @@ namespace LogTest
     public class FileSink : ILogSink
     {
         private StreamWriter _writer;
-        DateTime _curDate;
-        protected IDateTimeServer _timeServer;
+        DateTime _registeredDate;
+        public IDateTimeServer TimeServer { get; private set; }
 
-        public FileSink(IDateTimeServer timeServer)
+        private readonly ILogRotationRule _rotationRule;
+
+        public FileSink(IDateTimeServer timeServer, ILogRotationRule rotationRule)
         {
-            this._timeServer = timeServer;
-            this._curDate = _timeServer.Now;
+            this.TimeServer = timeServer;
+            this._rotationRule = rotationRule;
+
+            this._registeredDate = TimeServer.Now;
 
             if (!Directory.Exists(@"C:\LogTest"))
                 Directory.CreateDirectory(@"C:\LogTest");
@@ -22,17 +26,18 @@ namespace LogTest
             CreateNewWriter();
         }
 
-        public FileSink() : this(new DateTimeServer()) { }
+        public FileSink() : this(new DateTimeServer(), new DailyRotationRule() ) { }
+        public FileSink(IDateTimeServer timeServer) : this(timeServer, new DailyRotationRule()) { }
 
         public void Write(string content)
         {
-            if (this._timeServer.Now.Date != _curDate.Date)
+            if (_rotationRule.Evaluate(TimeServer.Now, _registeredDate))
             {
-                _curDate = _timeServer.Now;
+                _registeredDate = TimeServer.Now;
 
                 CreateNewWriter();
             }
-            
+
             this._writer.Write(content);
         }
 
@@ -40,7 +45,7 @@ namespace LogTest
         {
             this._writer?.Dispose();
 
-            var path = _timeServer.Now.LogPath();
+            var path = TimeServer.Now.LogPath();
             this._writer = File.AppendText(path);
             
             string header = CreateLogHeader();
