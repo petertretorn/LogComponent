@@ -38,11 +38,9 @@ namespace LogTest
             {
                 try
                 {
-                    var isDoneFlushing = (_flush && _lines.Count == 0);
+                    if (token.IsCancellationRequested || IsDoneFlushing() ) return;
 
-                    if (token.IsCancellationRequested || isDoneFlushing) return;
-
-                    if ( _lines.TryTake( out LogLine logLine, TimeSpan.FromMilliseconds(50) ) )
+                    if (_lines.TryTake(out LogLine logLine, TimeSpan.FromMilliseconds(50)))
                     {
                         var line = CreateLogLine(logLine);
                         _sink.Write(line);
@@ -52,6 +50,8 @@ namespace LogTest
                 catch (Exception swallow) { }
             }
         }
+
+        private bool IsDoneFlushing() => (_flush && _lines.Count == 0);
 
         private string CreateLogLine(LogLine line) =>
             $"{line.Timestamp.ToString("yyyy - MM - dd HH: mm: ss: fff")}\t{line.LineText()}\t{Environment.NewLine}";
